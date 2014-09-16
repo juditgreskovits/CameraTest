@@ -6,12 +6,36 @@
 //  Copyright (c) 2014 Judit Greskovits. All rights reserved.
 //
 
+/*UIImage *image = [UIImage imageNamed:@"myImage"];
+CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeFace
+context:nil
+options:@{CIDetectorAccuracy: CIDetectorAccuracyHigh}];
+
+NSDictionary *options = @{ CIDetectorSmile: @YES, CIDetectorEyeBlink: @YES };
+
+NSArray *features = [detector featuresInImage:image.CIImage options:options];
+
+for (CIFaceFeature *feature in features) {
+    NSLog(@"Bounds: %@", NSStringFromCGRect(feature.bounds));
+    
+    if (feature.hasSmile) {
+        NSLog(@"Nice smile!");
+    } else {
+        NSLog(@"Why so serious?");
+    }
+    if (feature.leftEyeClosed || feature.rightEyeClosed) {
+        NSLog(@"Open your eyes!");
+    }
+}*/
+
 import UIKit
 import AVFoundation
 
 class ViewController: UIViewController {
     
     let captureSession = AVCaptureSession()
+    let detector = CIDetector(ofType:CIDetectorTypeFace, context:nil, options:[CIDetectorAccuracy:CIDetectorAccuracyHigh, CIDetectorSmile:true, CIDetectorEyeBlink:true])
+    
     var previewLayer : AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
 
@@ -45,7 +69,7 @@ class ViewController: UIViewController {
     func configureDevice() {
         if let device = captureDevice {
             device.lockForConfiguration(nil)
-            device.focusMode = .Locked // what / why is this???
+            // device.focusMode = .Locked // what / why is this???
             device.unlockForConfiguration()
         }
     }
